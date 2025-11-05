@@ -1,0 +1,27 @@
+name: Aggiorna link da Google Sheet
+
+on:
+  workflow_dispatch:   # esecuzione manuale
+  schedule:
+    - cron: '0 * * * *'   # ogni ora
+
+jobs:
+  update-links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clona il repository
+        uses: actions/checkout@v4
+
+      - name: Imposta Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Esegui script aggiornamento link
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: python update_links.py
