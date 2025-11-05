@@ -1,0 +1,35 @@
+name: Aggiorna Link Cardmarket
+
+on:
+  repository_dispatch:
+    types: [sheet_updated]
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium webdriver-manager gspread google-auth
+
+      - name: Save GOOGLE_CREDENTIALS to file
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          echo "$GOOGLE_CREDENTIALS" > /tmp/creds.json
+
+      - name: Run script
+        env:
+          GOOGLE_CREDENTIALS_FILE: /tmp/creds.json
+        run: |
+          # Salviamo il payload del dispatch (utile se vuoi gestare solo una riga specifica)
+          echo "${{ toJson(github.event.client_payload) }}" > /tmp/payload.json
+          python main.py --payload /tmp/payload.json
