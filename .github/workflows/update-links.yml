@@ -24,4 +24,4 @@ jobs:
       - name: Esegui script aggiornamento link
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-        run: .github/python update_links.py
+        run: python .github/update_links.py
