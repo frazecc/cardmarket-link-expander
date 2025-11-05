@@ -10,8 +10,8 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 # --- Configurazione: foglio e colonne ---
-SPREADSHEET_NAME = "NOME_DEL_TUO_FOGLIO"   # <-- modifica qui con il nome del foglio Google (esatto)
-SHEET_NAME = "Foglio1"                     # <-- nome del tab (modifica se serve)
+SPREADSHEET_NAME = "collezione pkmn - modulo"   # <-- modifica qui con il nome del foglio Google (esatto)
+SHEET_NAME = "true"                     # <-- nome del tab (modifica se serve)
 LINK_COL = 7   # colonna G -> indice 7 (1-based per gspread? useremo A1 range)
 RESULT_OFFSET = 1  # scrive nella colonna a destra (H)
 
