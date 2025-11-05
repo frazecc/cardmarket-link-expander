@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
 
       - name: Installa dipendenze
-        run: pip install -r requirements.txt
+        run: pip install -r requirements_links.txt
 
       - name: Esegui script aggiornamento link
         env:
