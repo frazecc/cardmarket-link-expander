@@ -1,35 +1,37 @@
 name: Aggiorna Link Cardmarket
 
 on:
+  workflow_dispatch:   # 👈 Permette di avviare il workflow manualmente
   repository_dispatch:
-    types: [sheet_updated]
+    types: [sheet_updated]   # 👈 Manteniamo anche il trigger automatico per futuro uso
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Setup Python
+    steps:
+      - name: Clona il repository
+        uses: actions/checkout@v4
+
+      - name: Imposta Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Installa dipendenze
         run: |
           python -m pip install --upgrade pip
           pip install selenium webdriver-manager gspread google-auth
 
-      - name: Save GOOGLE_CREDENTIALS to file
+      - name: Salva GOOGLE_CREDENTIALS su file temporaneo
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: |
           echo "$GOOGLE_CREDENTIALS" > /tmp/creds.json
 
-      - name: Run script
+      - name: Esegui script principale (main.py)
         env:
           GOOGLE_CREDENTIALS_FILE: /tmp/creds.json
         run: |
-          # Salviamo il payload del dispatch (utile se vuoi gestare solo una riga specifica)
           echo "${{ toJson(github.event.client_payload) }}" > /tmp/payload.json
-          python main.py --payload /tmp/payload.json
+          python .github/workflows/main.py --payload /tmp/payload.json
